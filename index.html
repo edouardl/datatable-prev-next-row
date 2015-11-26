@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Get adjacent (prev/next) Row - DataTable Plugins</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="datatable/jquery.dataTables.min.css">
+		<link rel="stylesheet" type="text/css" href="media/style.css">
+		
+		<script type="text/javascript" src="media/jquery.js"> </script>
+		<script type="text/javascript" src="datatable/jquery.dataTables.min.js"> </script>
+		<script type="text/javascript" src="datatable.prev()-next().row().js"> </script>
+		
+    </head>
+    <body>
+		<div class="content">
+			<h1>DataTable : get the adjacent row plugins</h1>
+			<p>
+				Some examples of plugin use.
+				Use the "prev()" or the "next()"  function chained to the rows API elements like : 
+			</p>
+<pre>
+	var table = jQuery('#example_table').DataTable();
+	
+	// Selection by index for the example
+	table.row( 1 ).next();
+	table.row( 1 ).prev();
+</pre>
+<br>
+			<p>
+				Try to change order of B column to change the row sequence (alphanumeric sort)
+				<br><br>
+				See the page code for more details.
+				<br><br>
+				<i>This plugin could be combine with the <a href="https://github.com/edouardl/datatable-show-row">row().show() plugin</a> to set a navigation row by row with page change.</i>
+			</p>
+			<br>
+      
+			<button type="button" data-action="prev">Previous row</button>
+			<button type="button" data-action="next">Next row</button>
+			<br><br>
+			<label>
+				Value of selected row B column : 
+			</label>
+			<input type="text" readonly id="the_value" />
+			<br><br>
+			<table id="example_table" >
+				<thead>
+					<tr>
+						<th>A</th>
+						<th>B</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+		<script>
+			var table_data = [];
+			// Create 50 rows 
+			var r = 1;
+			do{
+				table_data.push( {
+					'a': r,
+					'b' : 'B - ' + r
+				});
+				r++;
+			} while( r <= 50 );
+			
+			
+			// Init DataTable
+			var table = jQuery('#example_table').DataTable({
+				data:table_data,
+				columns: [
+					{ data: 'a' },
+					{ data: 'b' }
+				],
+				"order": [[ 0, "asc" ]]
+			});
+			
+			
+			
+			// Select the 2th row for this example
+			var current_row_index = 1;
+			// Set an highlight css class
+			jQuery( jQuery('#example_table tbody').find('tr')[ current_row_index ] ).addClass('current_row');
+			
+			
+			
+			// Prev action
+			jQuery('[data-action="prev"]').on('click', function() {
+				// Get prev row
+				var prev_row = table.row( current_row_index ).prev();
+				
+				if( !prev_row ) {
+					return;
+				}
+				// Set current row index in var for navigation purpose
+				current_row_index = prev_row.index();
+				
+				// Set B col value in input
+				jQuery('#the_value').val( prev_row.data().b );
+				
+				// Highlight management
+				jQuery('.current_row').removeClass();
+				prev_row.nodes().toJQuery().addClass('current_row');
+			});
+			
+			
+			// Next action
+			jQuery('[data-action="next"]').on('click', function() {
+				var next_row = table.row( current_row_index ).next();
+				if( !next_row ) {
+					return;
+				}
+				// Set current row index in var for navigation purpose
+				current_row_index = next_row.index();
+				
+				// Set B col value in input
+				jQuery('#the_value').val( next_row.data().b );
+				
+				// Highlight management
+				jQuery('.current_row').removeClass('current_row');
+				next_row.nodes().toJQuery().addClass('current_row');
+			});
+			
+			
+			
+			
+			// Just a highlight fix after page change
+			jQuery('#example_table').on('draw.dt', function() {
+				jQuery('.current_row').removeClass();
+				table.row(current_row_index).nodes().toJQuery().addClass('current_row');
+			});
+		</script>
+    </body>
+</html>
