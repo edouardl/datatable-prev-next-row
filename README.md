@@ -6,26 +6,24 @@ It permits to get the previous or the next row of the selected one.
 
 Could be chained to the DataTable Rows API, see examples below : 
 
-
 ### Example
 
 var table = jQuery('#example_table').DataTable();
 
-// Show a selected row
+// Get prev row
     
-    table.row( '#row_example' ).show().draw(false);
+    table.row( '#current_row_example' ).prev(); // Return a DataTable row() object
 
-// Update row and show it after reorder
+// Get prev row
     
-    table.row( '#row_example' ).data({ [some data] }).draw().show().draw(false);
+    table.row( '#current_row_example' ).prev(); // Return a DataTable row() object
 
-// Create a row and show it after drawing
-    
-    table.row.add({ [some data] }).draw().show().draw(false);
 
+### Other
+
+See [row().show() plugin](https://github.com/edouardl/datatable-show-row) to build a row by row navigation.
 
 ### Changelog
 
 Version 1.0
-* Remove the "r_" prefix
-* Remove the calling of "draw()" function inside the show() method to be consistent with the rest of the API
+* Initial
