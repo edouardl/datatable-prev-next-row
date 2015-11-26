@@ -14,9 +14,9 @@ var table = jQuery('#example_table').DataTable();
     
     table.row( '#current_row_example' ).prev(); // Return a DataTable row() object
 
-// Get prev row
+// Get next row
     
-    table.row( '#current_row_example' ).prev(); // Return a DataTable row() object
+    table.row( '#current_row_example' ).next(); // Return a DataTable row() object
 
 
 ### Other
